@@ -1,0 +1,9 @@
+db.sqlite3
+media/
+staticfiles/
+venv/
+__pycache__/
+*.pyc
+.env
+*.xlsx
+!chelsy_mock_orders.xlsx

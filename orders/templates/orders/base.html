@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Chelsy Packaging (Pvt) Ltd{% endblock %}</title>
+  <link href="{% static 'orders/vendor/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'orders/fonts/fonts.css' %}" rel="stylesheet">
+  <link href="{% static 'orders/style.css' %}" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-dark chelsy-nav">
+    <div class="container py-2">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'order_search' %}">
+        <svg width="30" height="30" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="20,3 35,11 35,29 20,37 5,29 5,11" fill="#d98e3f"/>
+          <polygon points="20,3 35,11 20,19 5,11" fill="#e8ac6b"/>
+          <polyline points="20,19 20,37" stroke="#7a5330" stroke-width="1"/>
+          <polyline points="5,11 20,19 35,11" stroke="#7a5330" stroke-width="1" fill="none"/>
+        </svg>
+        <span>
+          Chelsy Packaging
+          <small>(PVT) LTD — ORDER SYSTEM</small>
+        </span>
+      </a>
+      <div class="d-flex gap-2">
+        {% if user.is_authenticated %}
+          <a class="btn btn-nav btn-sm" href="{% url 'order_create' %}">+ New Order</a>
+          {% if user.is_staff %}
+            <a class="btn btn-nav btn-sm" href="{% url 'excel_import' %}">Import Excel</a>
+            <a class="btn btn-nav btn-sm" href="/admin/">Admin</a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  <div class="flute-divider"></div>
+  <div class="container py-4 pb-5">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

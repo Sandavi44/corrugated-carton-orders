@@ -1,0 +1,24 @@
+{% extends "orders/base.html" %}
+{% block title %}{% if is_edit %}Edit Order{% else %}New Order{% endif %} — Chelsy Packaging{% endblock %}
+{% block content %}
+<div class="page-eyebrow mb-1">{% if is_edit %}Editing {{ form.instance.invoice_number }}{% else %}New Entry{% endif %}</div>
+<h1 class="h3 mb-4">{% if is_edit %}Edit Order{% else %}New Order{% endif %}</h1>
+
+<form method="post" enctype="multipart/form-data" class="filter-panel">
+  {% csrf_token %}
+  <div class="row g-3">
+    {% for field in form %}
+      <div class="col-md-4">
+        <label class="form-label d-block">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<div class="form-text small">{{ field.help_text }}</div>{% endif %}
+        {% if field.errors %}<div class="text-danger small mt-1">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="mt-4">
+    <button type="submit" class="btn btn-brand px-4">{% if is_edit %}Save Changes{% else %}Save Order{% endif %}</button>
+    {% if is_edit %}<a href="{% url 'order_detail' form.instance.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>{% endif %}
+  </div>
+</form>
+{% endblock %}

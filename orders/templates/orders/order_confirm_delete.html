@@ -1,0 +1,15 @@
+{% extends "orders/base.html" %}
+{% block title %}Delete Order — Chelsy Packaging{% endblock %}
+{% block content %}
+<div class="page-eyebrow mb-1">Confirm Deletion</div>
+<h1 class="h3 mb-4">Delete order {{ order.invoice_number }}?</h1>
+
+<div class="panel p-4" style="max-width: 520px; border-left: 4px solid var(--color-stamp-red);">
+  <p>This permanently deletes order <strong class="invoice-cell">{{ order.invoice_number }}</strong> for <strong>{{ order.customer.name }}</strong> ({{ order.date_issued }}). This cannot be undone.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger-outline">Yes, delete this order</button>
+    <a href="{% url 'order_detail' order.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+  </form>
+</div>
+{% endblock %}
