@@ -6,8 +6,8 @@ from django.utils.safestring import mark_safe
 
 from .models import BoxType, Customer, Order, PlyType
 
-admin.site.site_header = "Chelsy Packaging (Pvt) Ltd"
-admin.site.site_title = "Chelsy Packaging Admin"
+admin.site.site_header = "Carton Factory Orders"
+admin.site.site_title = "Carton Factory Orders Admin"
 admin.site.index_title = "Order Management"
 
 # This app doesn't use Django's Groups/permissions system — access is

@@ -1,10 +1,10 @@
 databases:
-  - name: chelsy-packaging-db
+  - name: carton-factory-db
     plan: free
 
 services:
   - type: web
-    name: chelsy-packaging-orders
+    name: carton-factory-orders
     runtime: python
     plan: free
     buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
@@ -18,7 +18,7 @@ services:
         value: ".onrender.com"
       - key: DATABASE_URL
         fromDatabase:
-          name: chelsy-packaging-db
+          name: carton-factory-db
           property: connectionString
       # Add CLOUDINARY_URL manually in the Render dashboard once you have
       # a Cloudinary account (see README) — not something to hardcode here.

@@ -1,4 +1,4 @@
-# Chelsy Packaging (Pvt) Ltd — Order Management System
+# Carton Factory Orders — Order Management System
 
 Working Django project implementing the order search/filter system, with the
 bug fixes from the review already built in (see "Fixes included" below).
@@ -94,7 +94,7 @@ The same explanation is shown directly on each user's edit page in `/admin/`, an
 
 ## Sample data to try it out with
 
-`chelsy_mock_orders.xlsx` (included alongside this project) is a realistic 28-row sample sheet — different customers, box types, ply types, and dates, including two box types not pre-set-up in the admin panel, so you can see the "admin adds a category, import adapts automatically" behavior for yourself. Try uploading it through **Import Excel** with "Preview only" checked first, then for real.
+`sample_mock_orders.xlsx` (included alongside this project) is a realistic 28-row sample sheet — different customers, box types, ply types, and dates, including two box types not pre-set-up in the admin panel, so you can see the "admin adds a category, import adapts automatically" behavior for yourself. Try uploading it through **Import Excel** with "Preview only" checked first, then for real.
 
 
 

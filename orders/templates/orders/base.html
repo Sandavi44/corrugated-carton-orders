@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Chelsy Packaging (Pvt) Ltd{% endblock %}</title>
+  <title>{% block title %}Carton Factory Orders{% endblock %}</title>
   <link href="{% static 'orders/vendor/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'orders/fonts/fonts.css' %}" rel="stylesheet">
   <link href="{% static 'orders/style.css' %}" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-dark chelsy-nav">
+  <nav class="navbar navbar-dark brand-nav">
     <div class="container py-2">
       <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'order_search' %}">
         <svg width="30" height="30" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -20,8 +20,8 @@
           <polyline points="5,11 20,19 35,11" stroke="#7a5330" stroke-width="1" fill="none"/>
         </svg>
         <span>
-          Chelsy Packaging
-          <small>(PVT) LTD — ORDER SYSTEM</small>
+          Carton Factory Orders
+          <small>ORDER MANAGEMENT SYSTEM</small>
         </span>
       </a>
       <div class="d-flex gap-2">

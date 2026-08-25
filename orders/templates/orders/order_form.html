@@ -1,5 +1,5 @@
 {% extends "orders/base.html" %}
-{% block title %}{% if is_edit %}Edit Order{% else %}New Order{% endif %} — Chelsy Packaging{% endblock %}
+{% block title %}{% if is_edit %}Edit Order{% else %}New Order{% endif %} — Carton Factory Orders{% endblock %}
 {% block content %}
 <div class="page-eyebrow mb-1">{% if is_edit %}Editing {{ form.instance.invoice_number }}{% else %}New Entry{% endif %}</div>
 <h1 class="h3 mb-4">{% if is_edit %}Edit Order{% else %}New Order{% endif %}</h1>

@@ -1,5 +1,5 @@
 /* ============================================================
-   Chelsy Packaging — Order System design tokens
+   Carton Factory Orders — design tokens
    Palette pulled from the material itself: kraft paper, corrugated
    board, and ink-stamp markings, not a generic SaaS theme.
    ============================================================ */
@@ -33,17 +33,17 @@ body {
 }
 
 /* ---------- Navbar ---------- */
-.navbar.chelsy-nav {
+.navbar.brand-nav {
   background: var(--color-kraft-dark) !important;
   border-bottom: 4px solid var(--color-amber);
   box-shadow: 0 2px 0 rgba(0,0,0,0.08);
 }
-.navbar.chelsy-nav .navbar-brand {
+.navbar.brand-nav .navbar-brand {
   font-family: var(--font-display);
   font-size: 1.15rem;
   color: #fff !important;
 }
-.navbar.chelsy-nav .navbar-brand small {
+.navbar.brand-nav .navbar-brand small {
   display: block;
   font-family: var(--font-mono);
   font-size: 0.62rem;
@@ -51,13 +51,13 @@ body {
   color: #e9d8bd;
   font-weight: 400;
 }
-.navbar.chelsy-nav .btn-nav {
+.navbar.brand-nav .btn-nav {
   color: #f6ead2;
   border: 1px solid rgba(255,255,255,0.35);
   background: transparent;
   font-size: 0.82rem;
 }
-.navbar.chelsy-nav .btn-nav:hover {
+.navbar.brand-nav .btn-nav:hover {
   background: rgba(255,255,255,0.12);
   color: #fff;
 }

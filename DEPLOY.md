@@ -1,4 +1,4 @@
-# Deploying Chelsy Packaging Orders to the Internet (Render, free tier)
+# Deploying Carton Factory Orders Orders to the Internet (Render, free tier)
 
 This puts a real, clickable link online that anyone (interviewers included)
 can open — not just something running on your own computer. Render's free
@@ -15,14 +15,14 @@ variables) — these are the account/click steps on Render's side.
 Render deploys from a GitHub repository, so the code needs to live there first.
 
 1. Go to [github.com](https://github.com), sign up if you don't have an account (free).
-2. Click **New repository** (green button, top right). Name it `chelsy-packaging-orders`. Keep it **Public** (needed for Render's free tier to see it) or **Private** (also fine, just link your GitHub account to Render later). Don't tick "Add a README" — you already have one.
+2. Click **New repository** (green button, top right). Name it `carton-factory-orders`. Keep it **Public** (needed for Render's free tier to see it) or **Private** (also fine, just link your GitHub account to Render later). Don't tick "Add a README" — you already have one.
 3. On your own computer, in a terminal **inside your `carton_factory` folder**:
    ```
    git init
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/chelsy-packaging-orders.git
+   git remote add origin https://github.com/YOUR-USERNAME/carton-factory-orders.git
    git push -u origin main
    ```
    (Replace `YOUR-USERNAME` with your actual GitHub username. If `git` isn't recognized, install it from [git-scm.com](https://git-scm.com/downloads) first.)
@@ -44,7 +44,7 @@ __pycache__/
 
 1. Go to [render.com](https://render.com) → sign up (free, can use your GitHub account to sign up — this also connects them automatically).
 2. From the Render dashboard, click **New +** → **Blueprint**.
-3. Connect your `chelsy-packaging-orders` GitHub repo. Render will detect the `render.yaml` file already included in this project and set up both the web service and the free PostgreSQL database automatically from it.
+3. Connect your `carton-factory-orders` GitHub repo. Render will detect the `render.yaml` file already included in this project and set up both the web service and the free PostgreSQL database automatically from it.
 4. Click **Apply** / **Create**. It'll start building — this takes a few minutes the first time.
 
 ---
@@ -73,7 +73,7 @@ Same as running it locally — pick a username and password.
 
 Render shows your live URL at the top of the service page — something like:
 ```
-https://chelsy-packaging-orders.onrender.com
+https://carton-factory-orders.onrender.com
 ```
 That's the link to actually share, put on a CV, or click through in an interview.
 

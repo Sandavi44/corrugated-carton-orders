@@ -32,7 +32,7 @@ def build_orders_pdf(orders, truncated=False, total_matching=None):
     styles = getSampleStyleSheet()
     elements = []
 
-    elements.append(Paragraph("Chelsy Packaging (Pvt) Ltd — Order Export", styles["Title"]))
+    elements.append(Paragraph("Carton Factory Orders — Order Export", styles["Title"]))
     generated_line = f"Generated {timezone.now().strftime('%Y-%m-%d %H:%M')} — {len(orders)} order(s)"
     if truncated:
         generated_line += (
