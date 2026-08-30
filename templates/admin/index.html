@@ -1,46 +1,144 @@
 {% extends "admin/index.html" %}
 {% load static %}
 
+{% block sidebar %}
+<!-- Hide the sidebar to reclaim full page width -->
+{% endblock %}
+
 {% block content %}
-<a href="/" style="display:inline-block; margin-bottom:1rem; color:#b8722c; font-family: 'JetBrains Mono', monospace; font-size:0.8rem;">&larr; Back to the order search app</a>
+<style>
+  /* Override the default 600px limit on Django dashboard content width */
+  .dashboard #content {
+    width: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-<div style="background:#fffdf9; color:#2b2420; border:1px solid #ddccae; border-left:4px solid #d98e3f; border-radius:6px; padding:1.25rem 1.5rem; margin-bottom:1.5rem; max-width:900px;">
-  <h2 style="margin-top:0; font-size:1.05rem; color:#2b2420;">Quick orientation</h2>
-  <p style="margin-bottom:0.6rem; color:#2b2420;"><strong>"Recent actions"</strong> (bottom-right of this page) — just a personal log of things <em>you</em> have recently added or edited. For your own reference only — nothing to configure.</p>
-  <p style="margin-bottom:0;color:#2b2420;"><strong>Need a new column/field</strong> that isn't shown below? That's a quick code change on the developer's end, not something to hunt for here — it can usually be added in a few minutes and will show up here, in search, and in the order form automatically.</p>
-</div>
+  /* Override default admin float layouts to use full width */
+  #content-main {
+    width: 100% !important;
+    float: none !important;
+    margin-right: 0 !important;
+  }
 
-<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:1rem; max-width:1000px; margin-bottom:2rem;">
+  /* Premium Dashboard Grid spanning full width in a single row on desktop */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    width: 100% !important;
+    max-width: 1200px;
+    margin: 1.5rem auto 2rem;
+  }
 
-  <a href="/admin/orders/order/" style="text-decoration:none; color:#2b2420; background:#fffdf9; border:1px solid #ddccae; border-radius:6px; padding:1.1rem; display:block;">
-    <div style="font-size:1.4rem;">📦</div>
-    <div style="font-weight:700; margin:0.3rem 0 0.2rem;">Orders</div>
-    <div style="font-size:0.8rem; color:#6b5f52;">View, edit, or delete individual orders. Attach pattern images here too.</div>
-  </a>
+  @media (max-width: 1024px) {
+    .dashboard-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 
-  <a href="/admin/orders/boxtype/" style="text-decoration:none; color:#2b2420; background:#fffdf9; border:1px solid #ddccae; border-radius:6px; padding:1.1rem; display:block;">
-    <div style="font-size:1.4rem;">🏷️</div>
-    <div style="font-weight:700; margin:0.3rem 0 0.2rem;">Box Types</div>
-    <div style="font-size:0.8rem; color:#6b5f52;">Add a new box category — it appears in search filters and the order form immediately.</div>
-  </a>
+  @media (max-width: 640px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 
-  <a href="/admin/orders/plytype/" style="text-decoration:none; color:#2b2420; background:#fffdf9; border:1px solid #ddccae; border-radius:6px; padding:1.1rem; display:block;">
-    <div style="font-size:1.4rem;">📐</div>
-    <div style="font-weight:700; margin:0.3rem 0 0.2rem;">Ply Types</div>
-    <div style="font-size:0.8rem; color:#6b5f52;">Same idea as Box Types — 3/5/7 Ply, or add your own.</div>
-  </a>
+  .dashboard-card {
+    text-decoration: none !important;
+    color: var(--body-fg) !important;
+    background: #fffdf9;
+    border: 1px solid var(--hairline-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 130px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(43, 36, 32, 0.05);
+  }
 
-  <a href="/admin/orders/customer/" style="text-decoration:none; color:#2b2420; background:#fffdf9; border:1px solid #ddccae; border-radius:6px; padding:1.1rem; display:block;">
-    <div style="font-size:1.4rem;">🏢</div>
-    <div style="font-weight:700; margin:0.3rem 0 0.2rem;">Customers</div>
-    <div style="font-size:0.8rem; color:#6b5f52;">Customer names and addresses, created automatically from orders and imports.</div>
-  </a>
+  .dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(122, 83, 48, 0.14);
+    border-color: var(--accent);
+  }
 
-  <a href="/admin/auth/user/" style="text-decoration:none; color:#2b2420; background:#fffdf9; border:1px solid #ddccae; border-radius:6px; padding:1.1rem; display:block;">
-    <div style="font-size:1.4rem;">👤</div>
-    <div style="font-weight:700; margin:0.3rem 0 0.2rem;">Staff Logins</div>
-    <div style="font-size:0.8rem; color:#6b5f52;">Create logins for other staff. Click into any user for what each checkbox does.</div>
-  </a>
+  .card-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    background: #fcf6e8;
+    border: 1px solid #ebdcb9;
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
 
+  .dashboard-card:hover .card-icon-wrapper {
+    background: #f7efdd;
+    border-color: var(--accent);
+  }
+
+  .card-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin: 0;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0.5rem;
+    color: var(--link-fg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+  .back-link:hover {
+    color: var(--secondary);
+  }
+</style>
+
+<div id="content-main">
+  <a href="/" class="back-link">&larr; Back to the order search app</a>
+
+  <div class="dashboard-grid">
+    <a href="/admin/orders/order/" class="dashboard-card">
+      <div class="card-icon-wrapper">📦</div>
+      <h3 class="card-title">Orders</h3>
+    </a>
+
+    <a href="/admin/orders/boxtype/" class="dashboard-card">
+      <div class="card-icon-wrapper">🏷️</div>
+      <h3 class="card-title">Box Types</h3>
+    </a>
+
+    <a href="/admin/orders/plytype/" class="dashboard-card">
+      <div class="card-icon-wrapper">📐</div>
+      <h3 class="card-title">Ply Types</h3>
+    </a>
+
+    <a href="/admin/orders/customer/" class="dashboard-card">
+      <div class="card-icon-wrapper">🏢</div>
+      <h3 class="card-title">Customers</h3>
+    </a>
+
+    <a href="/admin/auth/user/" class="dashboard-card">
+      <div class="card-icon-wrapper">👤</div>
+      <h3 class="card-title">Staff Logins</h3>
+    </a>
+  </div>
 </div>
 {% endblock %}

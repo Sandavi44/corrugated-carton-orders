@@ -287,3 +287,82 @@ a:hover { color: var(--color-kraft-dark); }
   text-transform: uppercase;
   color: var(--color-ink-soft);
 }
+
+/* ---------- Form Controls Global Style Override ---------- */
+.form-control,
+.form-select {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-size: 0.88rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-amber);
+  box-shadow: 0 0 0 0.2rem rgba(217, 142, 63, 0.2);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.form-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+/* ---------- Button Transitions & Style Enhancements ---------- */
+.btn {
+  border-radius: 6px;
+  font-size: 0.85rem;
+  padding: 0.45rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+/* ---------- Pagination Style Override ---------- */
+.pagination .page-link {
+  color: var(--color-amber-dark);
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  transition: all 0.15s ease-in-out;
+}
+
+.pagination .page-link:hover {
+  color: var(--color-kraft-dark);
+  background-color: #f7efdd;
+  border-color: var(--color-border);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--color-amber);
+  border-color: var(--color-amber-dark);
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: var(--color-surface);
+  color: var(--color-ink-soft);
+  border-color: var(--color-border);
+  opacity: 0.6;
+}
+
+/* ---------- Shadow and Layout Enhancements ---------- */
+.filter-panel {
+  box-shadow: 0 4px 15px rgba(43, 36, 32, 0.04), 0 1px 3px rgba(43, 36, 32, 0.06) !important;
+}
+
+.manifest-table {
+  box-shadow: 0 4px 15px rgba(43, 36, 32, 0.04), 0 1px 3px rgba(43, 36, 32, 0.06);
+}
+
+.manifest-table tbody tr {
+  transition: background-color 0.15s ease;
+}

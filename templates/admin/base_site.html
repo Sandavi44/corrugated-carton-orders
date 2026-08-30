@@ -1,0 +1,232 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}">
+    <svg width="22" height="22" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+      <polygon points="20,3 35,11 35,29 20,37 5,29 5,11" fill="#d98e3f"/>
+      <polygon points="20,3 35,11 20,19 5,11" fill="#e8ac6b"/>
+      <polyline points="20,19 20,37" stroke="#7a5330" stroke-width="1"/>
+      <polyline points="5,11 20,19 35,11" stroke="#7a5330" stroke-width="1" fill="none"/>
+    </svg>
+    <span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: #fffdf9;">Carton Factory Orders</span>
+  </a>
+</div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'orders/fonts/fonts.css' %}">
+<style>
+  /* Design Token Overrides for Django Admin Theme */
+  :root, html[data-theme="light"] {
+    --primary: #b1804e;
+    --secondary: #7a5330;
+    --accent: #d98e3f;
+    --primary-fg: #fffdf9;
+
+    --body-fg: #2b2420;
+    --body-bg: #f1e8d9;
+    --body-quiet-color: #6b5f52;
+    --body-medium-color: #4a3e35;
+    --body-loud-color: #1c1613;
+
+    --header-color: #fffdf9;
+    --header-branding-color: var(--accent);
+    --header-bg: var(--secondary);
+    --header-link-color: var(--primary-fg);
+
+    --breadcrumbs-fg: #f1e8d9;
+    --breadcrumbs-link-fg: var(--body-bg);
+    --breadcrumbs-bg: #583a21;
+
+    --link-fg: #b8722c;
+    --link-hover-color: #7a5330;
+    --link-selected-fg: var(--secondary);
+
+    --hairline-color: #ddccae;
+    --border-color: #c8b79b;
+
+    --button-fg: #fffdf9;
+    --button-bg: #b1804e;
+    --button-hover-bg: #7a5330;
+    --default-button-bg: #d98e3f;
+    --default-button-hover-bg: #b8722c;
+    --delete-button-bg: #9c3b30;
+    --delete-button-hover-bg: #822e25;
+
+    --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-family-monospace: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  body {
+    background-image: radial-gradient(circle at 1px 1px, rgba(140, 90, 43, 0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+
+  h1, h2, h3, #site-name a {
+    font-family: 'Fraunces', Georgia, serif;
+  }
+
+  #header {
+    background: var(--header-bg) !important;
+    border-bottom: 4px solid var(--accent);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  div.breadcrumbs {
+    background: var(--breadcrumbs-bg) !important;
+    color: var(--breadcrumbs-fg) !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 40px !important;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  div.breadcrumbs a {
+    color: #fffdf9 !important;
+  }
+
+  div.breadcrumbs a:hover {
+    color: var(--accent) !important;
+    text-decoration: none;
+  }
+
+  /* Dashboard and Modules styling */
+  .module {
+    background: #fffdf9 !important;
+    border: 1px solid var(--hairline-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 3px rgba(43, 36, 32, 0.05) !important;
+    overflow: hidden;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .module h2, .module caption {
+    background: var(--secondary) !important;
+    color: #fffdf9 !important;
+    font-family: 'Fraunces', Georgia, serif !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    padding: 8px 12px !important;
+  }
+
+  #content-related {
+    background: #fffdf9 !important;
+    border: 1px solid var(--hairline-color) !important;
+    border-radius: 6px !important;
+    padding: 1.25rem !important;
+    box-shadow: 0 1px 3px rgba(43, 36, 32, 0.05) !important;
+  }
+
+  #content-related h2 {
+    font-family: 'Fraunces', Georgia, serif !important;
+    color: var(--secondary) !important;
+    font-size: 1.1rem !important;
+    margin-top: 0 !important;
+    border-bottom: 2px solid var(--accent) !important;
+    padding-bottom: 6px !important;
+    margin-bottom: 12px !important;
+    background: none !important;
+  }
+
+  #content-related .module h2 {
+    background: none !important;
+    padding: 0 !important;
+    margin-bottom: 10px !important;
+  }
+
+  #content-related h3 {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: var(--body-quiet-color) !important;
+  }
+
+  /* Table styling */
+  .results table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .results table thead th {
+    background: var(--secondary) !important;
+    color: #f6ead2 !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 10px 8px !important;
+    border-bottom: 2px solid var(--accent) !important;
+  }
+
+  .results table thead th a {
+    color: #f6ead2 !important;
+  }
+
+  .results table tbody tr {
+    background: #fffdf9 !important;
+  }
+
+  .results table tbody tr:nth-child(even) {
+    background: #fcf9f2 !important;
+  }
+
+  .results table tbody tr:hover {
+    background: #f7efdd !important;
+  }
+
+  .results table tbody td {
+    border-bottom: 1px solid var(--hairline-color) !important;
+    padding: 10px 8px !important;
+    vertical-align: middle;
+  }
+
+  /* Input fields */
+  input[type=text], input[type=password], input[type=email], input[type=number], textarea {
+    border: 1px solid var(--hairline-color) !important;
+    border-radius: 4px !important;
+    padding: 6px 10px !important;
+    background-color: #fffdf9 !important;
+  }
+
+  select {
+    border: 1px solid var(--hairline-color) !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    height: auto !important;
+    line-height: 1.5 !important;
+    background-color: #fffdf9 !important;
+    vertical-align: middle !important;
+  }
+
+  input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=number]:focus, select:focus, textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(217, 142, 63, 0.2) !important;
+    outline: none !important;
+  }
+
+  .submit-row {
+    background: #fffdf9 !important;
+    border: 1px solid var(--hairline-color) !important;
+    border-radius: 6px !important;
+    padding: 12px 16px !important;
+  }
+
+  /* Custom badge for Django actions list */
+  .actionlist li {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.82rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+  }
+</style>
+{% endblock %}

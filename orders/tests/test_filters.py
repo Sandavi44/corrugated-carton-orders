@@ -79,3 +79,43 @@ class CustomerAndBoxTypeFilterTests(TestCase):
         f = OrderFilter({"box_type": self.diecut.id}, queryset=Order.objects.all())
         self.assertEqual(f.qs.count(), 1)
         self.assertEqual(f.qs.first().invoice_number, "B-1")
+
+
+class DateFilterAndSortTests(TestCase):
+    def setUp(self):
+        customer = Customer.objects.create(name="Sorting Co")
+        box = BoxType.objects.create(name="RSC")
+        ply = PlyType.objects.create(name="3 Ply")
+        self.o1 = Order.objects.create(
+            invoice_number="O-1", customer=customer, box_type=box, ply_type=ply,
+            length_cm=10, width_cm=10, height_cm=10, date_issued=datetime.date(2026, 3, 27),
+            issued_price=10, quantity=1,
+        )
+        self.o2 = Order.objects.create(
+            invoice_number="O-2", customer=customer, box_type=box, ply_type=ply,
+            length_cm=10, width_cm=10, height_cm=10, date_issued=datetime.date(2026, 12, 31),
+            issued_price=10, quantity=1,
+        )
+
+    def test_single_date_is_exact_match(self):
+        f = OrderFilter({"date_issued_0": "2026-03-27"}, queryset=Order.objects.all())
+        results = list(f.qs)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].invoice_number, "O-1")
+
+    def test_date_range_works(self):
+        f = OrderFilter({"date_issued_0": "2026-03-01", "date_issued_1": "2026-12-31"}, queryset=Order.objects.all())
+        self.assertEqual(f.qs.count(), 2)
+
+    def test_sort_by_recently_added_descending(self):
+        f = OrderFilter({"sort_by": "-recently_added"}, queryset=Order.objects.all())
+        results = list(f.qs)
+        # O-2 was created second, so it should be first
+        self.assertEqual(results[0].invoice_number, "O-2")
+        self.assertEqual(results[1].invoice_number, "O-1")
+
+    def test_sort_by_date_issued_ascending(self):
+        f = OrderFilter({"sort_by": "date_issued"}, queryset=Order.objects.all())
+        results = list(f.qs)
+        self.assertEqual(results[0].invoice_number, "O-1")
+        self.assertEqual(results[1].invoice_number, "O-2")

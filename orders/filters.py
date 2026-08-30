@@ -54,6 +54,24 @@ class ExactOrRangeFilter(django_filters.RangeFilter):
         return qs
 
 
+class ExactOrRangeDateFilter(django_filters.DateFromToRangeFilter):
+    """Date filters people expect to work like a search box:
+    type one date -> exact match on that date.
+    Fill in BOTH From and To -> genuine range between them.
+    A single filled box is always treated as exact."""
+    def filter(self, qs, value):
+        if value is None:
+            return qs
+        start, stop = value.start, value.stop
+        if start is not None and stop is not None:
+            return super().filter(qs, value)  # real range: both bounds given
+        if start is not None:
+            return qs.filter(**{self.field_name: start})  # exact match
+        if stop is not None:
+            return qs.filter(**{self.field_name: stop})  # exact match
+        return qs
+
+
 class OrderFilter(django_filters.FilterSet):
     invoice_number = django_filters.CharFilter(lookup_expr="icontains")
     customer_name = django_filters.CharFilter(
@@ -68,8 +86,8 @@ class OrderFilter(django_filters.FilterSet):
     ply_type = django_filters.ModelChoiceFilter(
         queryset=PlyType.objects.filter(is_active=True)
     )
-    date_issued = django_filters.DateFromToRangeFilter(
-        widget=DateMinMaxWidget(), label="Date issued (from – to)"
+    date_issued = ExactOrRangeDateFilter(
+        widget=DateMinMaxWidget(), label="Date issued"
     )
     length_cm = ExactOrRangeFilter(widget=MinMaxWidget(), label="Length cm")
     width_cm = ExactOrRangeFilter(widget=MinMaxWidget(), label="Width cm")
@@ -79,6 +97,31 @@ class OrderFilter(django_filters.FilterSet):
         widget=forms.Select,
         empty_label="Any",
     )
+    sort_by = django_filters.OrderingFilter(
+        fields=(
+            ("created_at", "recently_added"),
+            ("date_issued", "date_issued"),
+        ),
+        field_labels={
+            "-recently_added": "Recently Added (Newest first)",
+            "recently_added": "Recently Added (Oldest first)",
+            "-date_issued": "Date Issued (Newest first)",
+            "date_issued": "Date Issued (Oldest first)",
+        },
+        empty_label="Sort by...",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.form.fields.items():
+            widget = field.widget
+            if isinstance(widget, forms.MultiWidget):
+                for subwidget in widget.widgets:
+                    subwidget.attrs.update({"class": "form-control"})
+            elif isinstance(widget, (forms.Select, forms.NullBooleanSelect)):
+                widget.attrs.update({"class": "form-select"})
+            else:
+                widget.attrs.update({"class": "form-control"})
 
     class Meta:
         model = Order

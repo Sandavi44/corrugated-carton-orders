@@ -271,7 +271,7 @@ def _import_detail_rows(detail_rows, col, num_counts, line_seen, stats):
         box_type, _ = BoxType.objects.get_or_create(name=extract_box_type(memo))
         ply_type, _ = PlyType.objects.get_or_create(name=extract_ply(memo))
 
-        Order.objects.get_or_create(
+        order, was_created = Order.objects.get_or_create(
             invoice_number=invoice_number,
             defaults={
                 "customer": customer,
@@ -286,4 +286,8 @@ def _import_detail_rows(detail_rows, col, num_counts, line_seen, stats):
                 "is_printed": extract_is_printed(memo),
             },
         )
-        stats["created"] += 1
+        if was_created:
+            stats["created"] += 1
+        else:
+            stats["skipped"] += 1
+            stats["skipped_rows"].append((idx, f"invoice {invoice_number} already exists"))
