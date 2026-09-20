@@ -1,0 +1,34 @@
+# render-demo.yaml — Carton Factory Orders: DEMO / STAGING Blueprint
+# Deploy via: Render Dashboard > New Blueprint > point to THIS file (not render.yaml).
+# Spins up a completely separate service + throwaway DB with fake seeded data.
+# Zero real client data is used.
+
+databases:
+  - name: carton-factory-demo-db
+    databaseName: carton_factory_demo
+    plan: free
+
+services:
+  - type: web
+    name: carton-factory-orders-demo
+    runtime: python
+    plan: free
+    buildCommand: >-
+      pip install -r requirements.txt &&
+      python manage.py collectstatic --noinput &&
+      python manage.py migrate &&
+      python manage.py seed_demo_data
+    startCommand: "gunicorn carton_factory.wsgi:application"
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: carton-factory-demo-db
+          property: connectionString
+      - key: DEMO_MODE
+        value: "true"

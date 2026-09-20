@@ -1,7 +1,11 @@
+import os
+
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .excel_import import import_orders_from_excel
@@ -10,6 +14,24 @@ from .forms import ExcelUploadForm, OrderForm
 from .models import Order
 from .pdf_export import build_orders_pdf
 from .quickbooks_import import import_from_quickbooks_export, looks_like_quickbooks_export
+
+
+def demo_login(request):
+    """
+    One-click guest login for the portfolio staging demo.
+    Only active when the DEMO_MODE environment variable is set to 'true'.
+    On production this returns 403 so it cannot be misused.
+    """
+    if os.environ.get("DEMO_MODE", "").lower() != "true":
+        return HttpResponseForbidden("Demo mode is not enabled on this server.")
+
+    demo_user, _ = User.objects.get_or_create(
+        username="demo",
+        defaults={"first_name": "Demo", "last_name": "User", "is_staff": False},
+    )
+    # Specify the backend explicitly so Django doesn't need a password check.
+    login(request, demo_user, backend="django.contrib.auth.backends.ModelBackend")
+    return redirect("order_search")
 
 
 @login_required
